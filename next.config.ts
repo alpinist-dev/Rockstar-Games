@@ -1,14 +1,23 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'export', // Needed for GitHub Pages static export
+import type { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === 'production';
+
+const nextConfig: NextConfig = {
+  // 1. Enable static export (required for GitHub Pages)
+  output: 'export', 
+
+  // 2. Set the sub-path for GitHub Pages (e.g., /my-repo/)
+  // If using a custom domain, set this to an empty string ''
+  basePath: isProd ? '/Rockstar-Games' : '',
+
+  // 3. Ensure assets like CSS/JS use the correct path
+  assetPrefix: isProd ? '/Rockstar-Games' : '',
+
+  reactStrictMode: true,
+  trailingSlash: true, // Recommended for static hosting
   images: {
-    domains: ['wallpapercave.com', 'm.media-amazon.com'],
-    unoptimized: true, // Disable Next.js image optimization for static export
+    unoptimized: true, // Required: GitHub Pages doesn't support Next.js image optimization
   },
-
-  // Uncomment and set if your site is under a repo path
-  // basePath: '/your-repo-name',
 };
 
-module.exports = nextConfig;
+export default nextConfig;
